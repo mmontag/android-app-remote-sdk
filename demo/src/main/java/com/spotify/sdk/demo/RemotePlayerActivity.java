@@ -165,9 +165,8 @@ public class RemotePlayerActivity extends FragmentActivity {
             mRepeatState = data.playbackOptions.repeatMode;
             mShuffleState = data.playbackOptions.isShuffling;
 
-            mToggleRepeatButton.setText(getString(R.string.set_repeat_button) + " " + mRepeatState);
-            mToggleShuffleButton.setText(getString(R.string.set_shuffle_button) + " " + mShuffleState);
-
+            mToggleRepeatButton.setText(String.format(Locale.US, "%s (%d)", getString(R.string.set_repeat), mRepeatState));
+            mToggleShuffleButton.setText(String.format(Locale.US, "%s (%s)", getString(R.string.set_shuffle), (mShuffleState ? "On" : "Off")));
             mPlayerStateView.setText(String.format(Locale.US, "%d:%s", System.currentTimeMillis(), data));
 
             if (data.playbackSpeed > 0) {
@@ -270,6 +269,7 @@ public class RemotePlayerActivity extends FragmentActivity {
                 findViewById(R.id.get_collection_state),
                 findViewById(R.id.play_album_button),
                 findViewById(R.id.play_artist_button),
+                findViewById(R.id.play_alarm_button),
                 findViewById(R.id.play_playlist_button),
                 findViewById(R.id.get_fitness_child),
                 findViewById(R.id.connect_switch_to_local),
