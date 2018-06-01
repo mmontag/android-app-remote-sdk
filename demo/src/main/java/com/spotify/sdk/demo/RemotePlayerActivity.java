@@ -40,6 +40,8 @@ import android.widget.Toast;
 import com.spotify.android.appremote.api.ConnectionParams;
 import com.spotify.android.appremote.api.Connector;
 import com.spotify.android.appremote.api.ContentApi;
+import com.spotify.android.appremote.api.PlayerApi;
+import com.spotify.android.appremote.api.PlayerApi.StreamType;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
 import com.spotify.android.appremote.demo.R;
 import com.spotify.protocol.client.CallResult;
@@ -70,6 +72,7 @@ public class RemotePlayerActivity extends FragmentActivity {
     private static final String ALBUM_URI = "spotify:album:1x0uzT3ETlIYjPueTyNfnQ";
     private static final String ARTIST_URI = "spotify:artist:3WrFJ7ztbogyGnTHbHJFl2";
     private static final String PLAYLIST_URI = "spotify:user:spotify:playlist:0ck07VvqXYnuOhsZFy4fFe";
+    private static final String ALARM_URI = "spotify:track:2QiqwOVUctPRVggO9G1Zs5";
 
     private SpotifyAppRemote mSpotifyAppRemote;
 
@@ -376,12 +379,25 @@ public class RemotePlayerActivity extends FragmentActivity {
         playUri(ARTIST_URI);
     }
 
+    public void onPlayAlarmButtonClicked(View view) {
+        playUri(ALARM_URI, StreamType.ALARM);
+    }
+
     public void onPlayPlaylistButtonClicked(View view) {
         playUri(PLAYLIST_URI);
     }
 
     private void playUri(String uri) {
         mSpotifyAppRemote.getPlayerApi().play(uri).setResultCallback(new CallResult.ResultCallback<Empty>() {
+            @Override
+            public void onResult(Empty result) {
+                logMessage("Play successful");
+            }
+        }).setErrorCallback(mErrorCallback);
+    }
+
+    private void playUri(String uri, StreamType streamType) {
+        mSpotifyAppRemote.getPlayerApi().play(uri, streamType).setResultCallback(new CallResult.ResultCallback<Empty>() {
             @Override
             public void onResult(Empty result) {
                 logMessage("Play successful");
